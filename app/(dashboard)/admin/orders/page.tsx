@@ -6,12 +6,10 @@ import OrdersFiltersCard from '@/components/features/admin/orders/OrdersFiltersC
 import OrdersExportButtons from '@/components/features/admin/orders/OrdersExportButtons';
 import OrdersTable from '@/components/features/admin/orders/OrdersTable';
 import OrdersPagination from '@/components/features/admin/orders/OrdersPagination';
-import { getSortDir, getSortKey, type OrdersResponse, type SortDir, type SortKey } from '@/components/features/admin/orders/types';
+import { getSortDir, getSortKey, type OrdersResponse, type SortDir, type SortKey, type OrderDTO } from '@/components/features/admin/orders/types';
 import AdminPageHeader from '@/components/shared/admin/AdminPageHeader';
 import AdminCard from '@/components/shared/admin/AdminCard';
 import AdminSection from '@/components/shared/admin/AdminSection';
-
-import { Order } from "@prisma/client";
 
 export default function AdminOrdersPage() {
   const router = useRouter();
