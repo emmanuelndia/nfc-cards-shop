@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
 
     for (const o of orders) {
       const itemsSummary = (o.items ?? [])
-        .map((it) => `${it.cardType} x${it.quantity}`)
+        .map((it: any) => `${it.cardType} x${it.quantity}`)
         .join(' | ');
 
       sheet.addRow({
