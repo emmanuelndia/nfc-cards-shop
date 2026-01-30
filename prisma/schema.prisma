@@ -1,0 +1,67 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Pour l'authentification de l'Admin (compatible NextAuth)
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  login         String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // Pour un login simple email/password
+  role          String    @default("USER") // "ADMIN" ou "USER"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// La commande client
+model Order {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Infos Stripe
+  stripeSessionId String?  @unique // Pour lier le paiement Stripe à cette commande
+  amount          Float
+  quantity        Int      @default(1)
+  currency        String   @default("eur")
+  status          String   @default("PENDING") // PENDING, PAID, SHIPPED
+
+  items           OrderItem[]
+
+  // Infos Client (Récupérées via le formulaire ou Stripe)
+  customerName    String
+  customerEmail   String
+  address         String?  // Adresse de livraison
+
+  // Infos de personnalisation de la carte NFC
+  cardType        String   // ex: "PVC", "METAL", "BAMBOO"
+  support         String   @default("WHITE") // WHITE, BLACK, WOOD
+  nfcLink         String   // Le lien que le client veut sur sa carte (ex: linktree/pseudo)
+  nfcNameOnCard   String?  // Le nom imprimé sur la carte
+  logoUrl         String?  // Si tu ajoutes l'upload d'image plus tard
+  logoScale       Float?   // Taille relative du logo (ex: 0.5 - 2)
+  logoColor       String?  // Couleur des pictogrammes / accents (hex)
+  secondaryText   String?  // Poste / société
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId  String
+  cardType   String
+  unitAmount Float
+  quantity   Int
+}
