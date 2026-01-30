@@ -3,6 +3,19 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import Link from 'next/link';
 
+// Type pour les orders retournés par Prisma
+type DashboardOrder = {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  amount: number;
+  currency: string;
+  status: string;
+  cardType: string;
+  nfcNameOnCard: string | null;
+  createdAt: Date;
+};
+
 // Cette fonction va forcer l'écriture dans Supabase
 async function createFakeOrder() {
   "use server"
@@ -134,7 +147,7 @@ export default async function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {orders.map((order) => (
+              {orders.map((order: DashboardOrder) => (
                 <tr key={order.id} className="hover:bg-zinc-50/60">
                   <td className="px-6 py-4">
                     <div className="text-sm font-semibold text-zinc-900">{order.customerName}</div>
