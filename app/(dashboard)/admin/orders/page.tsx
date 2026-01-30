@@ -11,6 +11,8 @@ import AdminPageHeader from '@/components/shared/admin/AdminPageHeader';
 import AdminCard from '@/components/shared/admin/AdminCard';
 import AdminSection from '@/components/shared/admin/AdminSection';
 
+import { Order } from "@prisma/client";
+
 export default function AdminOrdersPage() {
   const router = useRouter();
   const pathname = usePathname();
@@ -107,7 +109,7 @@ export default function AdminOrdersPage() {
     run();
     return () => {
       cancelled = true;
-    };
+    };  
   }, [q, status, cardType, period, start, end, sort, dir, page, pageSize]);
 
   const items = data?.items ?? [];
